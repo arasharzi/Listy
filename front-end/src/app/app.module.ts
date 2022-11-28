@@ -29,6 +29,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ListComponent } from './list/list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginComponent,
     LandingComponent,
     ProfileComponent,
-    ListComponent
+    ListComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

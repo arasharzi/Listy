@@ -109,7 +109,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let results of searchList">
-                    <th scope="row">{{ results.name || results.title }}</th>
+                    <th scope="row" class="title-btn" (click)="openModal(results.id, results.media_type)">{{ results.name || results.title }}</th>
                     <td>{{ (results.vote_average | number) || "-"}}</td>
                     <td>{{ results.media_type }}</td>
                     <td>{{ results.first_air_date || results.release_date || "-"}}</td>

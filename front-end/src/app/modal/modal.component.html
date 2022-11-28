@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="title">Details</h5>
+</div>
+
+<div class="modal-body">
+    <div class="details-movie">
+        <!-- <img class="details-movie-image" src="https://image.tmdb.org/t/p/original{{ poster_path }}"> -->
+        <img class="details-movie-image" src="https://image.tmdb.org/t/p/w154{{ poster_path }}">
+        <p>
+        <p class="title">{{ title }}</p>      
+        <div class="description" style="float: right;">Rating: {{ rating }}</div>       
+        <p class="subtitle">{{ original_title }}</p>
+        <p class="description" id="genres"><b>Genres: </b>{{ genres }}</p>     
+        <p class="description" id="production-companies"><b>Production Companies: </b>{{ production_companies }}</p>      
+        <p class="description"><b>Year: </b>{{ release_date }}</p>
+        <p class="description"><b>Run Time: </b>{{ runtime }}</p>
+        <div class="description" style="padding-top: 14px;">{{ overview }}</div>
+        <div class="links" style="padding-top: 14px;">
+            <!-- <p class="description" id="cast" style="float: right;"><a href="GetCast({{ id }})" >Cast</a></p> -->
+            <p class="description" id="imdb"><a href="http://www.imdb.com/title/{{ imdb_id }}">IMDB</a></p>
+            <p class="description" id="homepage"><a href="{{ homepage }}">Homepage</a></p>        
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+    Close
+  </button>
+  <button type="button" class="btn btn-primary">Save changes</button>
+</div>

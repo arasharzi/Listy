@@ -8,3 +8,8 @@
 {
     padding-right: 6px;
 }
+
+.title-btn
+{
+    cursor: pointer;
+}
