@@ -79,7 +79,7 @@
                 Search
             </span>
             <form [formGroup]="searchForm" class="d-flex w-auto mb-3 justify-content-end" autoComplete="off" >
-                <div class="form-outline">
+                <div class="form-outline search-bar">
                     <input 
                         formControlName="search"
                         type="text"
@@ -110,11 +110,6 @@
             <tbody>
                 <tr *ngFor="let results of searchList">
                     <th scope="row">{{ results.name || results.title }}</th>
-
-
-
-
-
                     <td>{{ (results.vote_average | number) || "-"}}</td>
                     <td>{{ results.media_type }}</td>
                     <td>{{ results.first_air_date || results.release_date || "-"}}</td>

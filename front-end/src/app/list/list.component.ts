@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
 
 interface List 
 {
@@ -109,7 +109,17 @@ export class ListComponent implements OnInit
       .subscribe(response =>
         {
           result = response;
-          this.searchList = result.results
+          // movie db multi search gives actors too for now we'll remove them from the results. using the 
+          // multi search allows us to get tv shows and movies without having to do multiple calls to the api
+          for (var i = 0; i < result.results.length; i++) 
+          {
+            if (result.results[i].media_type === "person")
+            {
+              result.results.splice(i, 1);
+              i--;
+            }
+          }
+          this.searchList = result.results;
         });
     this.searchForm.get('search')?.setValue('');
   }
