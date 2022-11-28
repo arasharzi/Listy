@@ -1,0 +1,56 @@
+.container 
+{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  min-height: 100vh;
+  min-width: 100vw;
+  padding: 0;
+}
+ 
+section 
+{
+  display: -webkit-flex;
+  display: flex;
+  flex: 1 1 auto; 
+  align-content: center;
+  padding: 10px;
+}
+
+app-list
+{
+  /*margin: auto;*/
+  margin-top: 20px;
+  min-width: 60%;
+  width: -webkit-fill-available;
+}
+
+/*
+article 
+{
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 4;
+  /* background-color: #f1f1f1; 
+  padding: 10px;
+}
+
+
+article p
+{
+  padding-left: 64px;
+  padding-right: 64px;
+  text-align: justify;
+}
+
+
+.sidebar
+{
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background: #ccc;
+  padding: 20px;
+}
+*/

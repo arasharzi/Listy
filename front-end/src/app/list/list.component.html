@@ -1,0 +1,134 @@
+<mdb-tabs [vertical]="true" [justified]="true" [fill]="true">
+    <mdb-tab title="Currently Watching">
+        <h2>Currently Watching</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Progress</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">something</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let watching of watchingList">
+                    <th scope="row">{{ watching.title }}</th>
+                    <td>
+                        (todo progress bar)
+                        {{ watching.progress }}
+                    </td>
+                    <td>{{ watching.rating | number}}</td>
+                    <td>{{ watching.type }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+                [collectionSize]="collectionSize"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                (pageChange)="refreshList()"
+            >
+            </ngb-pagination>
+        </div>
+    </mdb-tab>
+
+
+    <mdb-tab title="Completed">
+        <h2>Completed</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Progress</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">something</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let completed of completedList">
+                    <th scope="row">{{ completed.title }}</th>
+                    <td>
+                        (todo progress bar)
+                        {{ completed.progress }}
+                    </td>
+                    <td>{{ completed.rating | number}}</td>
+                    <td>{{ completed.type }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+                [collectionSize]="collectionSize"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                (pageChange)="refreshList()"
+            >
+            </ngb-pagination>
+        </div>
+    </mdb-tab>
+
+    
+    <mdb-tab title="Search">
+        <h2>Search</h2>
+
+        <div class="input-group d-flex w-auto mb-3 justify-content-end">
+            <span class="border-0 material-symbols-outlined search-icon">
+                Search
+            </span>
+            <form [formGroup]="searchForm" class="d-flex w-auto mb-3 justify-content-end" autoComplete="off" >
+                <div class="form-outline">
+                    <input 
+                        formControlName="search"
+                        type="text"
+                        class="form-control"
+                        placeholder="Search"
+                        aria-label="Search" 
+                    />
+                    <label class="form-label"></label>
+                    <div class="form-notch">
+                        <div class="form-notch-leading"></div>
+                        <div class="form-notch-middle" style="width: 91.2px;"></div>
+                        <div class="form-notch-trailing"></div>
+                    </div>
+                </div>
+                <button class="ripple ripple-surface btn btn-outline-primary" role="button" (click)="submit($event)">Search</button>
+            </form>            
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Media</th>
+                    <th scope="col">Release Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let results of searchList">
+                    <th scope="row">{{ results.name || results.title }}</th>
+
+
+
+
+
+                    <td>{{ (results.vote_average | number) || "-"}}</td>
+                    <td>{{ results.media_type }}</td>
+                    <td>{{ results.first_air_date || results.release_date || "-"}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between p-2 page-nav">
+            <ngb-pagination
+                [collectionSize]="collectionSize"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                (pageChange)="refreshList()"
+            >
+            </ngb-pagination>
+        </div>
+    </mdb-tab>
+</mdb-tabs>
