@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ModalComponent } from '../modal/modal.component';
@@ -84,7 +84,7 @@ export class ListComponent implements OnInit
       search: new FormControl<string> ('', [Validators.required, Validators.minLength(2)]),
     });
   
-  constructor(private http: HttpClient, private modalService: MdbModalService, private changeDetector: ChangeDetectorRef) 
+  constructor(private http: HttpClient, private modalService: MdbModalService) 
   {
     this.refreshList();
     /*

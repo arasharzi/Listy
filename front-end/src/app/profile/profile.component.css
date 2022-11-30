@@ -1,0 +1,54 @@
+.profile
+{
+    padding-top: 60px;
+    padding-bottom: 100px;
+    width: 100vw;
+    justify-content: center;
+}
+
+.column-header
+{
+    display: flex;
+    justify-content: center;
+}
+
+.card-container
+{
+    padding: 6px;
+    /*justify-content: center;*/
+    max-width: 1012px;
+    min-width: 612px;
+    display: inline-block;
+}
+
+.col
+{
+    max-width: 200px;
+    display: inline-block;
+}
+
+.card
+{
+    cursor: pointer;
+}
+
+.card-title
+{
+    font-weight: 400;
+}
+
+.card-footer
+{
+    font-size: small;
+}
+
+.btn-group
+{
+    padding-left: 10px;
+}
+
+.btn-primary
+{
+    --bs-btn-color: black;
+    --bs-btn-bg: transparent;
+}

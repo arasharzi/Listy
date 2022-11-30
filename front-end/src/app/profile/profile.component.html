@@ -1,1 +1,42 @@
-<p>profile stats/news etc placeholder</p>
+
+
+<div class="profile">
+    <div class="column-header">
+        <h2>Trending</h2>
+        <div class="btn-group" role="group">
+            <button 
+                type="button" 
+                class="btn btn-primary"
+                [ngClass]="{ 'active': moviesActive }"
+                (click)='setActive("movies")'
+                >
+                    Movies
+            </button>
+            <button 
+                type="button" 
+                class="btn btn-primary"
+                [ngClass]="{ 'active': tvActive }" 
+                (click)='setActive("tv")'
+                >
+                    TV
+            </button>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 card-container">
+      <div class="col"  *ngFor="let trending of trending">
+        <div class="card h-100">
+          <img src="https://www.themoviedb.org/t/p/w220_and_h330_face{{ trending.poster_path }}" class="card-img-top" 
+            (click)="openModal(trending.id, trending.media_type)" />
+          <div class="card-body">
+            <p class="card-title">{{ (trending.title || trending.name).length > 18 ? ((trending.title || trending.name)).substring(0, 15) + "..." : 
+              (trending.title || trending.name)  }}</p>
+            <p class="card-text">
+            </p>
+          </div>
+          <div class="card-footer">
+              <small class="text-muted">{{ trending.release_date || trending.first_air_date }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
