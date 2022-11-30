@@ -13,3 +13,23 @@
 {
     cursor: pointer;
 }
+
+.btn-small-inv
+{
+    height: 18px;
+    width: 20px;
+    padding: 0;
+    line-height: 0;
+    --bs-btn-color: black;
+    --bs-btn-bg: transparent;
+}
+
+.btn-tbl
+{
+    --bs-btn-color: black;
+}
+
+.form-check .form-check-input
+{
+    float: none;
+}

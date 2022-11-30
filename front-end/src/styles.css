@@ -5,6 +5,7 @@ body
   font-family: Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 code 
@@ -106,4 +107,9 @@ code
 .page-nav
 {
   margin-bottom: 80px;
+}
+
+.modal
+{
+    background-color: rgba(0, 0, 0, 0.4);
 }

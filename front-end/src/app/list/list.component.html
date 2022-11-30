@@ -1,4 +1,6 @@
 <mdb-tabs [vertical]="true" [justified]="true" [fill]="true">
+
+    <!-- CURRENTLY WATCHING TAB -->
     <mdb-tab title="Currently Watching">
         <h2>Currently Watching</h2>
         <table class="table table-striped">
@@ -8,18 +10,32 @@
                     <th scope="col">Progress</th>
                     <th scope="col">Rating</th>
                     <th scope="col">Type</th>
-                    <th scope="col">something</th>
+                    <th scope="col">Completed</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let watching of watchingList">
-                    <th scope="row">{{ watching.title }}</th>
+                    <th scope="row" class="title-btn" (click)="openModal(watching.id, watching.media_type, true)">{{ watching.name || watching.title }}</th>
                     <td>
-                        (todo progress bar)
-                        {{ watching.progress }}
+                        <div class="progress" style="height: 20px">
+                            <div
+                              class="progress-bar"
+                              role="progressbar"
+                              [ngStyle]="{ 'width.% ': ((watching.progress / watching.total_episodes) * 100).toFixed(0) }"                               
+                              aria-valuenow="0"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            >
+                            {{ (watching.progress / watching.total_episodes * 100).toFixed(0) }}%
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-small-inv" (click)="updateProgress(watching.id, -1)">-</button>
+                        {{ watching.progress }}/{{ watching.total_episodes }}
+                        <button type="button" class="btn btn-primary btn-small-inv" (click)="updateProgress(watching.id, +1)">+</button>
                     </td>
                     <td>{{ watching.rating | number}}</td>
-                    <td>{{ watching.type }}</td>
+                    <td>{{ watching.media_type }}</td>
+                    <td>{{ watching.completed }}</td>
                 </tr>
             </tbody>
         </table>
@@ -34,7 +50,7 @@
         </div>
     </mdb-tab>
 
-
+    <!-- COMPLETED TAB -->
     <mdb-tab title="Completed">
         <h2>Completed</h2>
         <table class="table table-striped">
@@ -44,18 +60,36 @@
                     <th scope="col">Progress</th>
                     <th scope="col">Rating</th>
                     <th scope="col">Type</th>
-                    <th scope="col">something</th>
+                    <th scope="col">Completed</th>
+                    <th scope="col">Rewatching</th> 
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let completed of completedList">
-                    <th scope="row">{{ completed.title }}</th>
+                    <th scope="row" class="title-btn" (click)="openModal(completed.id, completed.media_type, true)">{{ completed.name || completed.title }}</th>
                     <td>
-                        (todo progress bar)
-                        {{ completed.progress }}
+                        <div class="progress" style="height: 20px">
+                            <div
+                              class="progress-bar"
+                              role="progressbar"
+                              [ngStyle]="{ 'width.% ': ((completed.progress / completed.total_episodes) * 100).toFixed(0) }"                               
+                              aria-valuenow="0"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            >
+                            {{ (completed.progress / completed.total_episodes * 100).toFixed(0) }}%
+                            </div>
+                        </div>
+                      {{ completed.progress }}/{{ completed.total_episodes }}
                     </td>
                     <td>{{ completed.rating | number}}</td>
-                    <td>{{ completed.type }}</td>
+                    <td>{{ completed.media_type }}</td>
+                    <td>{{ completed.completed }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-primary btn-rounded btn-tbl">
+                            Rewatch
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -70,10 +104,9 @@
         </div>
     </mdb-tab>
 
-    
+    <!-- SEARCH TAB -->
     <mdb-tab title="Search">
         <h2>Search</h2>
-
         <div class="input-group d-flex w-auto mb-3 justify-content-end">
             <span class="border-0 material-symbols-outlined search-icon">
                 Search
@@ -97,7 +130,6 @@
                 <button class="ripple ripple-surface btn btn-outline-primary" role="button" (click)="submit($event)">Search</button>
             </form>            
         </div>
-
         <table class="table table-striped">
             <thead>
                 <tr>

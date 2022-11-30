@@ -24,7 +24,7 @@ export class ModalComponent implements OnInit
   release_date:  string | null = 'n/a';
   homepage:  string | null = 'n/a';
   
-
+  list: boolean | null = false;
 
   constructor(public modalRef: MdbModalRef<ModalComponent>) 
   {

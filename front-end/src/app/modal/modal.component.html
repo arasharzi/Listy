@@ -13,7 +13,7 @@
         <p class="description" id="genres"><b>Genres: </b>{{ genres }}</p>     
         <p class="description" id="production-companies"><b>Production Companies: </b>{{ production_companies }}</p>      
         <p class="description"><b>Year: </b>{{ release_date }}</p>
-        <p class="description"><b>Run Time: </b>{{ runtime }}</p>
+        <p class="description"><b>Run Time: </b>{{ runtime }}m</p>
         <div class="description" style="padding-top: 14px;">{{ overview }}</div>
         <div class="links" style="padding-top: 14px;">
             <!-- <p class="description" id="cast" style="float: right;"><a href="GetCast({{ id }})" >Cast</a></p> -->
@@ -27,5 +27,16 @@
   <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
     Close
   </button>
-  <button type="button" class="btn btn-primary">Save changes</button>
+
+  <div *ngIf="list; else search">
+    <button type="button" class="btn btn-primary" (click)="null">
+        Save changes
+    </button>
+  </div>
+  
+  <ng-template #search>
+    <button type="button" class="btn btn-primary" (click)="null">
+        Add to list
+    </button>
+  </ng-template>
 </div>
