@@ -127,7 +127,8 @@
                         <div class="form-notch-trailing"></div>
                     </div>
                 </div>
-                <button class="ripple ripple-surface btn btn-outline-primary" role="button" (click)="submit($event)">Search</button>
+                <button class="ripple ripple-surface btn btn-outline-primary" role="button" 
+                    (click)="submit($event)" [disabled]="searchForm.controls['search'].errors" >Search</button>
             </form>            
         </div>
         <table class="table table-striped">

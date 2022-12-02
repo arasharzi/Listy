@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { ModalComponent } from '../modal/modal.component';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { UserService } from '../services/user.service';
 
 const WATCHING: any[] = 
 [
@@ -52,17 +52,6 @@ const COMPLETED: any[] = [
   }
 ];
 
-// https://api.themoviedb.org/3/search/multi?api_key=265a628f356b4c5af69f159234746fce&language=en-us&query=arcane&page=1
-// https://api.themoviedb.org/3/movie/" + value + "?api_key=265a628f356b4c5af69f159234746fce&language=en-US
-// https://api.themoviedb.org/3/tv/" + value + "?api_key=265a628f356b4c5af69f159234746fce&language=en-US
-
-const API_KEY = "265a628f356b4c5af69f159234746fce";
-const MDB_SEARCH_STRING = "https://api.themoviedb.org/3/search/multi?api_key=" + 
-  API_KEY + "&language=en-us&query=";
-
-const MDB_INFO_STRING_START = "https://api.themoviedb.org/3/" 
-const MDB_INFO_STRING_END = "?api_key=" + API_KEY + "&language=en-us";
-
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -81,10 +70,10 @@ export class ListComponent implements OnInit
 
   searchForm = new FormGroup(
     {
-      search: new FormControl<string> ('', [Validators.required, Validators.minLength(2)]),
+      search: new FormControl<string> ('', [Validators.required, Validators.minLength(1)]),
     });
   
-  constructor(private http: HttpClient, private modalService: MdbModalService) 
+  constructor(private user: UserService, private modalService: MdbModalService) 
   {
     this.refreshList();
     /*
@@ -97,8 +86,7 @@ export class ListComponent implements OnInit
   }
 
   ngOnInit(): void 
-  {
-  }
+  { }
 
   get search()
   {
@@ -118,24 +106,25 @@ export class ListComponent implements OnInit
   submit(e: Event)
   {
     e.preventDefault();
-    var result: any;
-
-    this.http.get(MDB_SEARCH_STRING + this.search)
-      .subscribe(response =>
-        {
-          result = response;
-          // movie db multi search gives actors too for now we'll remove them from the results. using the 
-          // multi search allows us to get tv shows and movies without having to do multiple calls to the api
-          for (var i = 0; i < result.results.length; i++) 
+    this.user.getSearchResults(this.search ?? '')
+        .subscribe(
           {
-            if (result.results[i].media_type === "person")
+            next: data =>
             {
-              result.results.splice(i, 1);
-              i--;
-            }
-          }
-          this.searchList = result.results;
-        });
+              var result = JSON.parse(data);
+              
+              // remove actors and acresses from the search results.
+              for (var i = 0; i < result.results.length; i++)
+              {
+                if (result.results[i].media_type === "person")
+                {
+                  result.results.splice(i, 1);
+                  i--;
+                }
+              }
+              this.searchList = result.results;
+            }            
+          });
     this.searchForm.get('search')?.setValue('');
   }
 
@@ -143,35 +132,37 @@ export class ListComponent implements OnInit
   // need to know if it's a movie or a tv series because the link format changes
   openModal(id: number, type: string, list?: boolean) 
   {
-    var result: any;
-    this.http.get(MDB_INFO_STRING_START + type + "/" + id + MDB_INFO_STRING_END)
-      .subscribe(response =>
+    this.user.getInfo(id, type)
+    .subscribe(
       {
-        result = response;
-        this.modalRef = this.modalService.open(ModalComponent,
+        next: data =>
         {
-          modalClass: 'modal-xl',
-          data: 
-          {
-            id: result.id,
-            title: result.title || result.name,
-            original_title: result.original_title || result.original_name,
-            image: result.backdrop_path,
-            poster_path:  result.poster_path,
-            rating: result.vote_average.toFixed(1),
-            genres: this.getListNames(result.genres),
-            production_companies: this.getListNames(result.production_companies),
-            runtime: result.runtime || result.episode_run_time,
-            overview: result.overview,
-            imdb_id: result.imdb_id,
-            cast: '',
-            release_date:  result.release_date || result.first_air_date,
-            homepage:  result.homepage,
-
-            list: list
-          },
-        });
-      })
+          var result = JSON.parse(data)
+          this.modalRef = this.modalService.open(ModalComponent,
+            {
+              modalClass: 'modal-xl',
+              data: 
+              {
+                id: result.id,
+                title: result.title || result.name,
+                original_title: result.original_title || result.original_name,
+                image: result.backdrop_path,
+                poster_path:  result.poster_path,
+                rating: result.vote_average.toFixed(1),
+                genres: this.getListNames(result.genres),
+                production_companies: this.getListNames(result.production_companies),
+                runtime: result.runtime || result.episode_run_time,
+                overview: result.overview,
+                imdb_id: result.imdb_id,
+                cast: '',
+                release_date:  result.release_date || result.first_air_date,
+                homepage:  result.homepage,
+    
+                list: list
+              },
+            });         
+        }
+      });
   }
 
   getListNames(list: any[]) :string

@@ -34,9 +34,9 @@ export class UserService
 
   }
 
-  getSearchResults()
+  getSearchResults(search: string): Observable<any>
   {
-
+    return this.http.get(MDB_SEARCH_STRING + search, { responseType: 'text' });
   }
 
   getInfo(id: number, type: string): Observable<any>
