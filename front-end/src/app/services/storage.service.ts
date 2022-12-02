@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class StorageService {
+
+export class StorageService 
+{
 
   constructor() { }
 }
