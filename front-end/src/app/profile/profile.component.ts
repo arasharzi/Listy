@@ -1,13 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-
-const API_KEY = '265a628f356b4c5af69f159234746fce'
-const API_TRENDING_MOVIE = 'https://api.themoviedb.org/3/trending/movie/week?api_key=' + API_KEY;
-const API_TRENDING_TV ='https://api.themoviedb.org/3/trending/tv/week?api_key=' + API_KEY;
-const MDB_INFO_STRING_START = "https://api.themoviedb.org/3/" 
-const MDB_INFO_STRING_END = "?api_key=" + API_KEY + "&language=en-us";
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -24,22 +18,25 @@ export class ProfileComponent implements OnInit
   trending_tv: any[] = [];
   trending: any[] = [];
 
-  constructor(private http: HttpClient, private modalService: MdbModalService) 
+  constructor(private user: UserService, private modalService: MdbModalService) 
   { 
-    var result: any;
-    this.http.get(API_TRENDING_MOVIE)
-      .subscribe(response =>
-        {
-          result = response;
-          this.trending_movies = result.results;
-          this.trending = this.trending_movies;
-        });
-    this.http.get(API_TRENDING_TV)
-      .subscribe(response =>
-        {
-          result = response;
-          this.trending_tv = result.results;
-        });
+    user.getTrendingMovies()
+        .subscribe(
+          {
+            next: data =>
+            {
+              this.trending_movies = JSON.parse(data).results;
+              this.trending = this.trending_movies;
+            }
+          });
+    user.getTrendingTv()
+        .subscribe(
+          {
+            next: data =>
+            {
+              this.trending_tv = JSON.parse(data).results;
+            }
+          });
   }
 
   ngOnInit(): void 
@@ -84,34 +81,36 @@ export class ProfileComponent implements OnInit
 
   openModal(id: number, type: string, list?: boolean) 
   {
-    var result: any;
-    this.http.get(MDB_INFO_STRING_START + type + "/" + id + MDB_INFO_STRING_END)
-      .subscribe(response =>
+    this.user.getInfo(id, type)
+    .subscribe(
       {
-        result = response;
-        this.modalRef = this.modalService.open(ModalComponent,
+        next: data =>
         {
-          modalClass: 'modal-xl',
-          data: 
-          {
-            id: result.id,
-            title: result.title || result.name,
-            original_title: result.original_title || result.original_name,
-            image: result.backdrop_path,
-            poster_path:  result.poster_path,
-            rating: result.vote_average.toFixed(1),
-            genres: this.getListNames(result.genres),
-            production_companies: this.getListNames(result.production_companies),
-            runtime: result.runtime || result.episode_run_time,
-            overview: result.overview,
-            imdb_id: result.imdb_id,
-            cast: '',
-            release_date:  result.release_date || result.first_air_date,
-            homepage:  result.homepage,
-
-            list: list
-          },
-        });
-      })
+          var result = JSON.parse(data)
+          this.modalRef = this.modalService.open(ModalComponent,
+            {
+              modalClass: 'modal-xl',
+              data: 
+              {
+                id: result.id,
+                title: result.title || result.name,
+                original_title: result.original_title || result.original_name,
+                image: result.backdrop_path,
+                poster_path:  result.poster_path,
+                rating: result.vote_average.toFixed(1),
+                genres: this.getListNames(result.genres),
+                production_companies: this.getListNames(result.production_companies),
+                runtime: result.runtime || result.episode_run_time,
+                overview: result.overview,
+                imdb_id: result.imdb_id,
+                cast: '',
+                release_date:  result.release_date || result.first_air_date,
+                homepage:  result.homepage,
+    
+                list: list
+              },
+            });         
+        }
+      });
   }
 }
